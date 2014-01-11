@@ -1,11 +1,13 @@
 ArrayList<Ray> rays;
 
+int maxDepth = -300;
+int lScale = 2;
 void setup(){
- size(400, 400);
+ size(800, 600, P3D);
  colorMode(HSB, 360, 100, 100); 
  rays = new ArrayList();
- for(int i = 0; i < 500; i++){
-   rays.add(new Ray(int(random(-width/4, width/4)), int(random(-height/4, height/4))));
+ for(int i = 0; i < 100; i++){
+   rays.add(new Ray(int(random(-width/lScale, width/lScale)), int(random(-height/lScale, height/lScale)), int(random(maxDepth,0))));
  }
 }
 
@@ -20,26 +22,26 @@ void draw(){
  } 
  noStroke();
  fill(0);
+ translate(0,0,5);
  ellipse(0, 0, width/5, width/5);
  popMatrix();
 }
 
 class Ray{
-  PVector loc;
- int rx, ry;
-  
-  Ray(int x, int y){
-    loc = new PVector(x, y);
+ PVector loc;
+ int rx, ry, rz;
+  Ray(int x, int y, int z){
+    loc = new PVector(x, y, z);
   }
  
   void update(){
-    loc.add(new PVector(random(-5, 5), random(-5, 5)));
-    
+    loc.add(new PVector(random(-2, 2)*2, random(-2, 2)*2,random(-3, 0)));
+    if(loc.z < maxDepth) loc.set(new PVector(int(random(-width/lScale, width/lScale)), int(random(-height/lScale, height/lScale)), 0));
   }
 
    void display(){
-     stroke(240, 0, 100);
-     strokeWeight(2);
-     line(0, 0, loc.x, loc.y);
+     stroke(0, 0, 100-(loc.z/maxDepth)*100);
+     strokeWeight(1);
+     line(0, 0, 0, loc.x, loc.y, loc.z);
    } 
 }
